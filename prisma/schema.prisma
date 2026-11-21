@@ -1,0 +1,300 @@
+// CRYPTORA — Prisma schema (SQLite)
+// A permissioned consortium-ledger e-voting prototype.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String
+  voterId      String?  @unique
+  auditorId    String?  @unique
+  createdAt    DateTime @default(now())
+  lastLoginAt  DateTime?
+
+  voter         Voter?
+  auditor       Auditor?
+  sessions      Session[]
+  auditLogs     AuditLog[]
+
+  @@index([role])
+}
+
+model Voter {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  voterNumber    String   @unique
+  district       String?
+  faculty        String?
+  eligibility    String   @default("ELIGIBLE")
+  verifiedAt     DateTime @default(now())
+  credentialSalt String   @default("")
+
+  memberships EligibleVoter[]
+  ballots     Ballot[]
+}
+
+model Auditor {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  auditorNumber String  @unique
+  organisation String   @default("Independent Election Commission")
+  accreditation String  @default("ACCREDITED")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  ip        String?
+  userAgent String?
+
+  @@index([userId])
+}
+
+model Election {
+  id          String         @id @default(cuid())
+  electionId  String         @unique
+  name        String
+  description String
+  status      String         @default("DRAFT")
+  startDate   DateTime
+  endDate     DateTime
+  rules       String         @default("Plurality")
+  voterGroup  String         @default("All registered voters")
+  maxSelections Int          @default(1)
+
+  merkleRoot   String?
+  merkleDepth  Int            @default(13)
+  leafCount    Int            @default(0)
+  tallyPublicKey  String?
+  tallyPrivateKey String?     // prototype key custody — see docs/SECURITY.md
+  keyBits      Int            @default(1024)
+
+  createdAt   DateTime       @default(now())
+  createdBy   String?
+
+  candidates      Candidate[]
+  eligibleVoters  EligibleVoter[]
+  ballots         Ballot[]
+  nullifiers      Nullifier[]
+  proofs          ZKPProof[]
+  results         ElectionResult[]
+  transactions    BlockchainTransaction[]
+  merkleTrees     MerkleTree[]
+}
+
+model Candidate {
+  id          String   @id @default(cuid())
+  candidateId String   @unique
+  electionId  String
+  election    Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  name        String
+  position    String
+  slogan      String
+  index       Int
+  createdAt   DateTime @default(now())
+
+  results     ElectionResult[]
+
+  @@unique([electionId, index])
+  @@index([electionId])
+}
+
+model EligibleVoter {
+  id             String   @id @default(cuid())
+  electionId     String
+  election       Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  voterId        String
+  voter          Voter    @relation(fields: [voterId], references: [id], onDelete: Cascade)
+  commitment     String
+  leafIndex      Int
+  createdAt      DateTime @default(now())
+
+  @@unique([electionId, voterId])
+  @@unique([electionId, leafIndex])
+  @@index([electionId])
+}
+
+model MerkleTree {
+  id         String   @id @default(cuid())
+  electionId String
+  election   Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  depth      Int
+  root       String
+  leafCount  Int
+  publishedAt DateTime @default(now())
+  levels     String   // JSON: compressed level hashes (audit trail)
+}
+
+model Ballot {
+  id            String   @id @default(cuid())
+  electionId    String
+  election      Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  voterId       String
+  voter         Voter    @relation(fields: [voterId], references: [id], onDelete: Cascade)
+  encrypted     EncryptedBallot?
+  nullifier     String
+  receiptCode   String   @unique
+  blockNumber   Int?
+  committedAt   DateTime @default(now())
+
+  @@unique([electionId, voterId])
+  @@unique([electionId, nullifier])
+  @@index([electionId])
+}
+
+model EncryptedBallot {
+  id          String   @id @default(cuid())
+  ballotId    String   @unique
+  ballot      Ballot   @relation(fields: [ballotId], references: [id], onDelete: Cascade)
+  scheme      String   @default("paillier-1024")
+  modulus     String
+  generator   String
+  ciphertexts String   // JSON array of decimal ciphertexts (one per candidate slot)
+  commitment  String   // sha256 of ciphertext bundle (integrity anchor)
+  createdAt   DateTime @default(now())
+}
+
+model Nullifier {
+  id         String   @id @default(cuid())
+  electionId String
+  election   Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  value      String
+  usedAt     DateTime @default(now())
+  ballotId   String?  @unique
+
+  @@unique([electionId, value])
+  @@index([electionId])
+}
+
+model ZKPProof {
+  id           String      @id @default(cuid())
+  electionId   String
+  election     Election    @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  nullifier    String
+  root         String
+  proofJson    String
+  publicSignalsJson String
+  verified     Boolean     @default(false)
+  status       String      @default("PENDING")
+  verificationMs Int       @default(0)
+  provenance   String      @default("LIVE") // LIVE | SEEDED
+  createdAt    DateTime    @default(now())
+
+  @@index([electionId, status])
+}
+
+model Validator {
+  id         String   @id @default(cuid())
+  validatorId String  @unique
+  name       String
+  publicKey  String
+  secretKey  String   // local consortium simulation only
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  signatures ValidatorSignature[]
+}
+
+model ValidatorSignature {
+  id          String   @id @default(cuid())
+  blockId     String
+  block       BlockchainBlock @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  validatorId String
+  validator   Validator @relation(fields: [validatorId], references: [id], onDelete: Cascade)
+  signature   String
+  message     String
+  createdAt   DateTime @default(now())
+
+  @@unique([blockId, validatorId])
+}
+
+model BlockchainBlock {
+  id            String   @id @default(cuid())
+  blockNumber   Int      @unique
+  previousHash  String
+  merkleRoot    String
+  timestamp     DateTime @default(now())
+  txCount       Int
+  consensus     String   @default("PENDING")
+  approvals     Int      @default(0)
+  validatorSet  String
+  blockHash     String   @unique
+
+  transactions BlockchainTransaction[]
+  signatures   ValidatorSignature[]
+  consensusRound ConsensusRound?
+
+  @@index([blockNumber])
+}
+
+model BlockchainTransaction {
+  id            String   @id @default(cuid())
+  txHash        String   @unique
+  type          String
+  blockNumber   Int?
+  blockId       String?
+  block         BlockchainBlock? @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  electionId    String?
+  election      Election? @relation(fields: [electionId], references: [id])
+  payload       String   // JSON, never contains plaintext candidate selections
+  nullifier     String?
+  timestamp     DateTime @default(now())
+  status        String   @default("CONFIRMED")
+
+  @@index([type])
+  @@index([electionId])
+  @@index([timestamp])
+}
+
+model ConsensusRound {
+  id           String   @id @default(cuid())
+  blockId      String   @unique
+  block        BlockchainBlock @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  required     Int      @default(4)
+  votes        Int
+  achieved     Boolean
+  startedAt    DateTime @default(now())
+  finishedAt   DateTime?
+}
+
+model ElectionResult {
+  id            String   @id @default(cuid())
+  electionId    String
+  election      Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  candidateId   String
+  candidate     Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  votes         Int
+  publishedAt   DateTime @default(now())
+
+  @@unique([electionId, candidateId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actor     User?    @relation(fields: [actorId], references: [id])
+  actorRole String
+  action    String
+  target    String?
+  detail    String   @default("")
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

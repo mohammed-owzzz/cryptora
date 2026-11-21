@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>CRYPTORA — Presentation Handbook</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #171914;
+    font-size: 10.3pt;
+    line-height: 1.5;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  h1, h2, h3, h4 { margin: 0; line-height: 1.15; }
+  p { margin: 0 0 7px; }
+  ul, ol { margin: 4px 0 9px 18px; padding: 0; }
+  li { margin: 0 0 4px; }
+  strong { font-weight: 650; }
+  code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 9pt;
+    background: #F1F3EE;
+    border: 1px solid #E2E5DD;
+    border-radius: 3px;
+    padding: 0 3px;
+  }
+  pre {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 8.6pt;
+    line-height: 1.55;
+    background: #14160F;
+    color: #E9EEDD;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin: 6px 0 10px;
+    white-space: pre-wrap;
+  }
+  pre code { background: none; border: 0; color: inherit; padding: 0; }
+
+  /* Cover */
+  .cover {
+    height: 262mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    page-break-after: always;
+  }
+  .cover-top { display: flex; align-items: center; gap: 10px; }
+  .mark {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: #14160F; color: #C9F36A;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 15px; letter-spacing: -0.5px;
+  }
+  .wordmark { font-size: 13pt; font-weight: 800; letter-spacing: 3px; }
+  .cover-main { margin-top: -10mm; }
+  .kicker {
+    font-size: 9pt; font-weight: 700; letter-spacing: 2.4px;
+    text-transform: uppercase; color: #5E6B4A;
+  }
+  .cover h1 {
+    font-size: 38pt; letter-spacing: -1.4px; margin: 12px 0 10px;
+    max-width: 150mm;
+  }
+  .cover h1 span { color: #6E8A2E; }
+  .cover-sub { font-size: 13pt; color: #4A5145; max-width: 140mm; line-height: 1.4; }
+  .rule { height: 3px; background: #C9F36A; width: 74mm; margin: 18px 0; }
+  .cover-meta { font-size: 9.5pt; color: #5A6155; }
+  .cover-meta strong { color: #171914; }
+  .cover-bottom {
+    border-top: 1px solid #DDE1D6;
+    padding-top: 10px;
+    display: flex; justify-content: space-between;
+    font-size: 8.5pt; color: #6A7164;
+  }
+
+  .page-break { page-break-before: always; }
+  h2.section {
+    font-size: 19pt; letter-spacing: -0.5px;
+    margin: 0 0 3px;
+  }
+  .section-kicker {
+    font-size: 8pt; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #6E8A2E; margin-bottom: 5px;
+  }
+  .section-lead { font-size: 10.5pt; color: #4E5549; margin-bottom: 12px; }
+  h3 { font-size: 12pt; margin: 13px 0 5px; }
+  h4 { font-size: 10pt; margin: 10px 0 3px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 5px 0 11px; font-size: 9.2pt; }
+  th {
+    text-align: left; font-size: 7.8pt; letter-spacing: 1.2px; text-transform: uppercase;
+    color: #66705C; border-bottom: 1px solid #C9CFC0; padding: 5px 6px;
+    background: #F7F8F4;
+  }
+  td { padding: 5px 6px; border-bottom: 1px solid #E6E9E1; vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+
+  .callout {
+    border-left: 3px solid #A8D34F;
+    background: #F6FAEC;
+    padding: 9px 12px; margin: 9px 0 11px; border-radius: 0 5px 5px 0;
+    font-size: 9.6pt;
+  }
+  .callout.warn { border-left-color: #D9A441; background: #FCF7EA; }
+  .callout strong { display: block; margin-bottom: 2px; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+  .card {
+    border: 1px solid #DDE1D6; border-radius: 7px; padding: 10px 12px;
+    page-break-inside: avoid;
+  }
+  .card h4 { margin-top: 0; }
+  .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+
+  .step {
+    display: flex; gap: 10px; margin: 0 0 9px; page-break-inside: avoid;
+  }
+  .step-n {
+    flex: 0 0 20px; height: 20px; border-radius: 50%;
+    background: #14160F; color: #C9F36A;
+    font-size: 8.5pt; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+  .step-body { flex: 1; }
+  .step-body p { margin-bottom: 3px; }
+  .time { font-size: 8pt; color: #6E8A2E; font-weight: 700; letter-spacing: 0.5px; }
+
+  .check { list-style: none; margin-left: 0; }
+  .check li { position: relative; padding-left: 18px; margin-bottom: 5px; }
+  .check li:before {
+    content: ""; position: absolute; left: 0; top: 3px;
+    width: 9px; height: 9px; border: 1.4px solid #7C8A6A; border-radius: 2px;
+  }
+  .small { font-size: 8.7pt; color: #5F665A; }
+  .tag {
+    display: inline-block; font-size: 7.4pt; font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; border: 1px solid #C8D0BC; color: #56624A;
+    padding: 1px 5px; border-radius: 999px; margin-right: 4px;
+  }
+  .footer-note { margin-top: 14px; border-top: 1px solid #E0E4DA; padding-top: 7px; font-size: 8.2pt; color: #737A6C; }
+  .qa { margin: 0 0 10px; page-break-inside: avoid; }
+  .qa .q { font-weight: 700; font-size: 9.8pt; margin-bottom: 2px; }
+  .qa .a { color: #40473C; }
+  .num { font-variant-numeric: tabular-nums; }
+  .centered { text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="mark">C</div>
+    <div class="wordmark">CRYPTORA</div>
+  </div>
+
+  <div class="cover-main">
+    <div class="kicker">Final-year project review · Presentation handbook</div>
+    <h1>A private ballot.<br/>A <span>public proof</span>.</h1>
+    <div class="rule"></div>
+    <p class="cover-sub">
+      How to explain the system, demonstrate it live, and answer the questions
+      a review panel will actually ask — without overstating what the prototype does.
+    </p>
+  </div>
+
+  <div>
+    <div class="cover-meta">
+      <p><strong>Project:</strong> CRYPTORA — privacy-preserving e-voting on a consortium ledger</p>
+      <p><strong>Venue:</strong> Shree L.R. Tiwari College of Engineering · Department of Computer Engineering</p>
+      <p><strong>Date:</strong> 22 November 2026 · <strong>Duration:</strong> 12–15 minutes + questions</p>
+    </div>
+    <div class="cover-bottom">
+      <span>Academic prototype · demonstration environment</span>
+      <span>Startup, script and fallback plan inside</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ 1. THE PITCH ============================ -->
+<h2 class="section">1 · The project in one minute</h2>
+<p class="section-kicker">What to say first</p>
+<p class="section-lead">Open with the problem, not the technology. The panel needs one sentence they can repeat.</p>
+
+<p><strong>“CRYPTORA is an e-voting system that lets an institution prove an election is honest without ever revealing how any individual voted.”</strong></p>
+
+<p>Conventional e-voting forces a bad trade-off. A central database can be edited, so you are asked to trust the operator. Publishing ballots fixes that, but destroys the secret ballot. CRYPTORA separates the three questions that usually get tangled together:</p>
+
+<table>
+  <tr><th style="width:34%">Question</th><th>Mechanism</th></tr>
+  <tr><td><strong>Who is allowed to vote?</strong></td><td>A Poseidon Merkle tree of voter commitments; only its root is published on the ledger.</td></tr>
+  <tr><td><strong>What was submitted?</strong></td><td>A Paillier-encrypted vector, encrypted inside the voter’s browser. The server never sees a selection.</td></tr>
+  <tr><td><strong>Was anything altered?</strong></td><td>An append-only chain signed by five validator identities with a 4-of-5 quorum.</td></tr>
+</table>
+
+<p>Three ideas carry the whole project:</p>
+<ul>
+  <li><strong>Zero-knowledge eligibility.</strong> The voter proves “my credential is in the published set and this is my one-time nullifier” without revealing which leaf they are.</li>
+  <li><strong>Encryption, not publication.</strong> The ballot is a ciphertext. Totals are decrypted in aggregate only.</li>
+  <li><strong>Evidence instead of trust.</strong> Hashes, Merkle roots and Ed25519 signatures can be recomputed by an independent auditor role.</li>
+</ul>
+
+<div class="callout">
+  <strong>Say this explicitly in the first minute</strong>
+  “The consortium is simulated inside one server process; the cryptography and signatures are real. I’ll separate what is genuinely implemented from what a production deployment would add.”
+  That sentence buys credibility and prevents the panel from “catching” you later.
+</div>
+
+<h3>The honest architecture</h3>
+<div class="grid2">
+  <div class="card">
+    <h4>Client</h4>
+    <p>React + TypeScript + Vite. Runs the Groth16 prover and Paillier encryption in the browser. Three workspaces: administrator, voter, auditor.</p>
+  </div>
+  <div class="card">
+    <h4>Server</h4>
+    <p>Express + TypeScript. Role-scoped APIs, same-origin mutation guard, session cookies, Merkle tree construction, proof verification, ledger commits and reports.</p>
+  </div>
+  <div class="card">
+    <h4>Cryptography</h4>
+    <p>Circom circuit (depth 13, Poseidon over BN254), Groth16 proofs, Paillier 1024-bit tally keys, SHA-256 commitments, Ed25519 validator signatures.</p>
+  </div>
+  <div class="card">
+    <h4>Data</h4>
+    <p>SQLite through Prisma. Deterministic seed: 8 elections, 8,526 ballots, 428 blocks, 17,080 transactions, 5 validators.</p>
+  </div>
+</div>
+
+<!-- ============================ 2. HOW IT WORKS ============================ -->
+<div class="page-break"></div>
+<h2 class="section">2 · How a ballot actually moves</h2>
+<p class="section-kicker">The eight-step story</p>
+<p class="section-lead">This is the core explanation. Draw it on the board or point at <code>/how-it-works</code> while you speak.</p>
+
+<ol>
+  <li><strong>Enrolment.</strong> Each voter gets a secret credential salt. A commitment — a Poseidon hash of the salt — becomes a leaf of the election’s Merkle tree. The root is published on the ledger when the election opens.</li>
+  <li><strong>Authentication.</strong> The voter signs in with their voter number and password. The session cookie is <code>HttpOnly</code> and same-site; every API route checks the role on the server, not in the UI.</li>
+  <li><strong>Witness delivery.</strong> <code>GET /api/voter/elections/:id/witness</code> returns only that voter’s Merkle path, secret and nullifier, over the authenticated session and with <code>no-store</code>. It refuses if the election is not live, the window is closed, the voter is ineligible, or a ballot already exists.</li>
+  <li><strong>Proof generation.</strong> The browser runs Groth16 (<code>snarkjs</code>, <code>eligibility.wasm</code> + <code>eligibility_final.zkey</code>) to prove membership in the published root and correct nullifier derivation. The private inputs never leave the tab.</li>
+  <li><strong>Local verification.</strong> The proof is verified against the circuit key <em>before</em> anything is sent. An invalid ballot is never transmitted.</li>
+  <li><strong>Encryption.</strong> The selected candidate becomes a one-hot vector, encrypted with the election’s Paillier public key, then bound into a SHA-256 commitment.</li>
+  <li><strong>Consensus.</strong> The server re-verifies the proof against the stored root, election id and expected nullifier, checks the commitment, enforces the single-use nullifier, collects five validator signatures (quorum 4) and appends a block.</li>
+  <li><strong>Receipt.</strong> The voter receives a receipt code, block number and transaction hash. The ledger stores ciphertext, never a candidate name.</li>
+</ol>
+
+<div class="callout">
+  <strong>The one-line version</strong>
+  “Eligibility is proven, the choice is encrypted, the submission is signed, and the receipt proves existence without revealing content.”
+</div>
+
+<h3>Why each piece exists</h3>
+<table>
+  <tr><th style="width:27%">Piece</th><th>What it prevents</th><th style="width:30%">What it does not do</th></tr>
+  <tr><td>Merkle root</td><td>Fake or ineligible voters being added silently.</td><td>Does not hide that you are eligible — only which leaf you are.</td></tr>
+  <tr><td>Groth16 proof</td><td>Submitting a ballot without a valid credential.</td><td>Does not prove the encrypted vector is exactly one-hot.</td></tr>
+  <tr><td>Nullifier</td><td>Voting twice with the same credential.</td><td>Is not an identity and cannot be linked across elections.</td></tr>
+  <tr><td>Paillier ciphertext</td><td>Anyone reading individual selections.</td><td>Does not by itself prove the tally was decrypted honestly.</td></tr>
+  <tr><td>Validator signatures</td><td>Silent edits to history after the fact.</td><td>They run in one process here — no real network partition.</td></tr>
+</table>
+
+<h3>Three workspaces, one source of truth</h3>
+<p><strong>Administrator</strong> creates elections, manages candidates and rosters, publishes the eligibility root, opens/closes voting, publishes aggregates, exports CSV/PDF reports, inspects the ledger. <strong>Voter</strong> sees only their eligible elections, casts one ballot, verifies receipts, and never sees candidate totals tied to identity. <strong>Auditor</strong> is read-only: re-runs the full chain verification, re-checks ZK proofs independently, inspects ballot integrity and exports reports. Every portal reads the same aggregate statistics endpoint, so the numbers cannot drift between screens.</p>
+
+<!-- ============================ 3. DEMO SCRIPT ============================ -->
+<div class="page-break"></div>
+<h2 class="section">3 · The live demonstration</h2>
+<p class="section-kicker">12–15 minutes · exact clicks</p>
+<p class="section-lead">Rehearse this twice. Keep the browser at 100% zoom on a 1920×1080 projector, and keep this page beside you.</p>
+
+<div class="step"><div class="step-n">1</div><div class="step-body">
+  <p><span class="time">0:00 – 1:30</span><br/><strong>Home page.</strong> <code>http://localhost:5173</code></p>
+  <p>State the problem in one sentence. Point at the live aggregates: <strong>12,480 voter commitments, 8 elections, 8,526 verified ballots, 68.3% participation, ledger valid</strong>. Mention that these numbers come from the same API as every dashboard.</p>
+</div></div>
+
+<div class="step"><div class="step-n">2</div><div class="step-body">
+  <p><span class="time">1:30 – 3:00</span><br/><strong>How it works + architecture.</strong> <code>/how-it-works</code></p>
+  <p>Walk the eight-stage diagram once, top to bottom. Then <code>/security</code> for the three mechanisms. Do not read the page aloud; use it as a backdrop.</p>
+</div></div>
+
+<div class="step"><div class="step-n">3</div><div class="step-body">
+  <p><span class="time">3:00 – 4:30</span><br/><strong>Documentation portal.</strong> <code>/docs</code></p>
+  <p>Show that the six documents are rendered from the repository Markdown. Search “nullifier”, open a result, point at the copy-code button and the table of contents. This proves the documentation cannot drift from the implementation.</p>
+</div></div>
+
+<div class="step"><div class="step-n">4</div><div class="step-body">
+  <p><span class="time">4:30 – 7:00</span><br/><strong>Administrator.</strong> <code>/admin/login</code> → <em>Fill form</em></p>
+  <p>Dashboard numbers, then Elections → <code>ELEC-2026-003</code>: published Merkle root, tally, ledger activity. Optional: open a block on <code>/admin/blockchain</code> and show the five signatures and “5 signatures · quorum 4”. If you created a draft beforehand, show candidate add/remove and CSV import.</p>
+  <p class="small">Do not create an election live unless you have rehearsed it and can afford 30–60 seconds of commitment generation.</p>
+</div></div>
+
+<div class="step"><div class="step-n">5</div><div class="step-body">
+  <p><span class="time">7:00 – 10:30</span><br/><strong>The live ballot.</strong> <code>/voter/login</code> → <em>Fill form</em> → Available elections → <code>ELEC-2026-001</code> → <em>Cast ballot</em></p>
+  <p>Select a candidate → <em>Review ballot</em> → <em>Encrypt &amp; submit ballot</em>. Narrate the five stages as they light up: witness, proof, local verification, encryption, consensus. <strong>Expect a few seconds on the first proof</strong> while the ~5 MB artifacts load; do not click twice.</p>
+  <p>The receipt shows the code, block number, <strong>5 of 5 approvals</strong>, <code>Groth16 · verified</code> and server verification time (<span class="num">~100–200 ms</span>).</p>
+</div></div>
+
+<div class="step"><div class="step-n">6</div><div class="step-body">
+  <p><span class="time">10:30 – 11:30</span><br/><strong>Double-vote prevention.</strong></p>
+  <p>Reload the election: it now says the ballot is recorded and offers the receipt. Open <code>/voter/.../vote</code> directly: it refuses with the nullifier explanation. Mention that the API also returns HTTP 409 even with a valid proof.</p>
+</div></div>
+
+<div class="step"><div class="step-n">7</div><div class="step-body">
+  <p><span class="time">11:30 – 13:30</span><br/><strong>Auditor.</strong> <code>/auditor/login</code> → <em>Fill form</em> → <em>Run ledger verification</em></p>
+  <p>Show <strong>428 blocks / 429 after your ballot</strong>, 17,080 transactions (17,082 after), ~2,140 Ed25519 signatures, <code>VALID</code>. Then ZKP Verification → filter <code>LIVE</code> → <em>Verify</em> on the proof you just cast: independent re-verification in about 100 ms. Finish on Ballot Integrity: zero failures, no candidate column anywhere.</p>
+</div></div>
+
+<div class="step"><div class="step-n">8</div><div class="step-body">
+  <p><span class="time">13:30 – 15:00</span><br/><strong>Limitations and future scope.</strong></p>
+  <p>Say plainly: simulated consortium, no smart contracts, single-key tally custody, no ballot well-formedness circuit, SQLite. Then future scope: threshold trustees, real QBFT network, range proofs, HSM/wallet witness, public ceremony.</p>
+</div></div>
+
+<div class="callout warn">
+  <strong>Block-number gotcha</strong>
+  Block numbering is zero-based. A ballot cast after the seed appears as <strong>block #428</strong>, while the auditor’s block count becomes <strong>429</strong>. Say “block 428, the 429th block” if a panel member notices.
+</div>
+
+<!-- ============================ 4. NUMBERS & CHECKLIST ============================ -->
+<div class="page-break"></div>
+<h2 class="section">4 · Numbers and accounts to memorise</h2>
+<p class="section-kicker">The canonical seed</p>
+
+<table>
+  <tr><th>Figure</th><th>Value</th><th>Where it appears</th></tr>
+  <tr><td>Voter commitments</td><td class="num">12,480</td><td>Dashboard (two accounts are eligible in more than one election)</td></tr>
+  <tr><td>Unique voter accounts</td><td class="num">12,478</td><td>Voter Registry total</td></tr>
+  <tr><td>Elections</td><td class="num">8</td><td>2 live, 6 completed</td></tr>
+  <tr><td>Ballots / proofs</td><td class="num">8,526</td><td>0 rejected; 8,524 seeded + 2 live proofs</td></tr>
+  <tr><td>Ledger blocks / transactions</td><td class="num">428 / 17,080</td><td>428 → 429 and 17,080 → 17,082 after a live ballot</td></tr>
+  <tr><td>Validators / quorum</td><td class="num">5 / 4</td><td>All five sign; four are enough</td></tr>
+  <tr><td>Participation</td><td class="num">68.3%</td><td>8,526 ÷ 12,480 commitments</td></tr>
+  <tr><td>Circuit</td><td class="num">Groth16 · BN254 · depth 13</td><td>8,192 leaves per election</td></tr>
+</table>
+
+<table>
+  <tr><th>Role</th><th>Login page</th><th>Identifier</th><th>Password</th></tr>
+  <tr><td>Administrator</td><td><code>/admin/login</code></td><td><code>admin@cryptora.demo</code></td><td><code>Admin@1234!</code></td></tr>
+  <tr><td>Voter (Alex Morgan)</td><td><code>/voter/login</code></td><td><code>VOTER-2026-0042</code></td><td><code>Voter@1234!</code></td></tr>
+  <tr><td>Auditor (Jordan Blake)</td><td><code>/auditor/login</code></td><td><code>jordan@cryptora.demo</code> + <code>AUD-2026-001</code></td><td><code>Auditor@1234!</code></td></tr>
+</table>
+<p class="small">Each login page has a <strong>Fill form</strong> button — use it rather than typing on stage. Wrong credentials return 401 without saying which field was wrong.</p>
+
+<h2 class="section" style="margin-top:18px">5 · Before you present</h2>
+<p class="section-kicker">T‑1 day, T‑60 minutes, T‑5 minutes</p>
+
+<div class="grid2">
+  <div class="card">
+    <h4>The day before</h4>
+    <ul class="check">
+      <li>Run <code>npm install</code>, then <code>npm run seed</code>, then <code>npm run dev</code>.</li>
+      <li>Log in as all three roles and confirm the dashboard shows 12,480 / 8,526 / valid.</li>
+      <li>Cast one rehearsed ballot, then <code>npm run seed</code> again to reset.</li>
+      <li>Rehearse the script end-to-end twice with a timer.</li>
+      <li>Copy the whole project folder and <code>prisma/cryptora.db</code> to a USB drive as a fallback.</li>
+      <li>Export this handbook and <code>PRESENTATION_READINESS.md</code> as PDFs on the laptop and phone.</li>
+      <li>Charge the laptop; pack the charger and a USB-C/HDMI adapter.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>One hour before</h4>
+    <ul class="check">
+      <li>Close Slack, downloads and anything that may steal focus or bandwidth.</li>
+      <li><code>npm run seed</code> for a clean canonical dataset.</li>
+      <li><code>npm run dev</code>; confirm both <code>:4000</code> and <code>:5173</code> respond.</li>
+      <li>Open tabs: Home, <code>/docs/zkp</code>, admin dashboard, auditor dashboard. Log in once per role in separate tabs if convenient.</li>
+      <li>Warm the proof: sign in as the voter, open <code>ELEC-2026-001</code>, submit once, then <strong>seed again</strong> and log back in. This caches the wasm/zkey and removes the warm-up ballot.</li>
+      <li>Set display to 1920×1080, browser zoom 100%, hide the bookmarks bar.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card" style="margin-top:10px">
+  <h4>Five minutes before</h4>
+  <ul class="check">
+    <li>Confirm internet is not required: the app, proofs and data are all local (fonts fall back offline).</li>
+    <li>Keep a terminal open in the project folder, ready for <code>npm run seed</code>.</li>
+    <li>Have a second terminal or tab with the API health check: <code>curl localhost:4000/api/health</code>.</li>
+    <li>Silence notifications; disable sleep; check the projector is mirroring, not extending.</li>
+    <li>Take one breath and start with the one-sentence problem statement.</li>
+  </ul>
+</div>
+
+<div class="callout warn">
+  <strong>If you cast a ballot during the demo</strong>
+  The dataset changes: 8,527 ballots, block 429, 17,082 transactions. If a later examiner wants the canonical numbers, run <code>npm run seed</code> in the break and sign in again — never reseed in front of the panel without saying what you are doing.
+</div>
+
+<!-- ============================ 6. Q&A ============================ -->
+<div class="page-break"></div>
+<h2 class="section">6 · Questions you should expect</h2>
+<p class="section-kicker">Answer in two sentences, then stop</p>
+
+<div class="qa"><p class="q">“Is the blockchain real?”</p>
+<p class="a">The hashes, Merkle roots, Ed25519 signatures and 4-of-5 quorum are real and are recomputed from genesis by the auditor role. The five validators are independent identities with real keys, but they run inside one Node process — it is a simulation of a consortium, not a deployed network.</p></div>
+
+<div class="qa"><p class="q">“Can you see who I voted for?”</p>
+<p class="a">No API response joins a voter to a candidate. The ballot row has no candidate column; the selection exists only as Paillier ciphertext and is decrypted only in aggregate. The receipt proves the ballot exists without revealing it.</p></div>
+
+<div class="qa"><p class="q">“How is double voting prevented?”</p>
+<p class="a">An election-scoped nullifier is derived from the credential secret. It is recorded the moment a ballot is committed and re-checked by validators; a second submission is rejected with 409 even if its proof is valid.</p></div>
+
+<div class="qa"><p class="q">“Why not just use Ethereum?”</p>
+<p class="a">A public chain would publish participation metadata and cost gas per ballot, and it still would not provide ballot privacy. This design keeps eligibility and tallying off-chain with cryptographic evidence, and the ledger only needs to be tamper-evident. A production version could anchor the same roots on a permissioned QBFT network.</p></div>
+
+<div class="qa"><p class="q">“What happens if the server is compromised?”</p>
+<p class="a">An attacker with database access can read ciphertexts, salts and the tally key in this prototype — so they could decrypt the tally. They cannot silently change history without breaking hash links and signatures, and every admin action is written to an audit log. Threshold tally custody and HSM-held keys are the production fix.</p></div>
+
+<div class="qa"><p class="q">“Does the ZK proof prove the vote is well-formed?”</p>
+<p class="a">No. It proves eligibility and nullifier derivation. Ballot well-formedness — exactly one selected candidate — is enforced by vector-length and commitment checks on the server, not by a range proof. That is stated in the docs and is the main cryptographic limitation.</p></div>
+
+<div class="qa"><p class="q">“What is actually novel here?”</p>
+<p class="a">The engineering contribution is the integration: a browser-side Groth16 prover, Paillier encryption, a Merkle eligibility root, a signed ledger and three role-scoped workspaces, with an auditor that can independently re-verify every layer. It is a coherent reference implementation, not a new primitive.</p></div>
+
+<div class="qa"><p class="q">“How would this scale to a national election?”</p>
+<p class="a">The circuit depth fixes 8,192 leaves per election, so national scale needs a different accumulator or sharded roots; tallying would move to threshold trustees; SQLite would become a replicated database; and validators would be independent institutions. The interfaces are designed so those pieces can be replaced.</p></div>
+
+<div class="qa"><p class="q">“Why SQLite / why no migrations?”</p>
+<p class="a">It keeps the demonstration reproducible on one machine. The schema is applied with <code>prisma db push</code>; production would use versioned migrations and a server database.</p></div>
+
+<div class="qa"><p class="q">“What did you personally build?”</p>
+<p class="a">Answer honestly with your split: circuit/ledger/server/client/documentation. Name the parts you wrote and the libraries you used — the panel respects a clear boundary.</p></div>
+
+<!-- ============================ 7. TROUBLESHOOTING ============================ -->
+<div class="page-break"></div>
+<h2 class="section">7 · When something goes wrong</h2>
+<p class="section-kicker">Recover in under a minute</p>
+
+<table>
+  <tr><th style="width:30%">Symptom</th><th>Cause</th><th>Fix on stage</th></tr>
+  <tr><td>Page won’t load at <code>:5173</code></td><td>Dev server stopped or port changed</td><td>Check the terminal; restart <code>npm run dev</code>. Vite may print <code>:5174</code> if 5173 is taken — use the printed URL.</td></tr>
+  <tr><td>API calls fail / blank dashboard</td><td>API process died</td><td><code>curl localhost:4000/api/health</code>; restart <code>npm run dev</code>.</td></tr>
+  <tr><td>“Generate proof” hangs</td><td>First load of ~5 MB wasm/zkey</td><td>Wait up to 20–30 seconds; do not click twice. If it fails, reload and retry once; the artifacts are cached after that.</td></tr>
+  <tr><td>Proof rejected</td><td>Artifacts out of sync with the verification key</td><td>Run <code>npm run setup</code>, restart the API. Do not attempt this live unless rehearsed.</td></tr>
+  <tr><td>“Eligibility tree failed to reproduce…”</td><td>Database edited or partially seeded</td><td><code>npm run seed</code>; sign in again.</td></tr>
+  <tr><td>Login says invalid credentials</td><td>Reseeded database (old accounts replaced) or caps lock</td><td>Use <strong>Fill form</strong>; the seed recreates the demo accounts.</td></tr>
+  <tr><td>Auditor numbers differ from the script</td><td>A live ballot was cast</td><td>Expected: 429 blocks / 17,082 transactions. Say so.</td></tr>
+  <tr><td>Port 4000 already in use</td><td>Old API process</td><td><code>lsof -nP -iTCP:4000</code> to find it, stop it, or set <code>PORT</code> in <code>.env</code>.</td></tr>
+  <tr><td>Browser shows a stale page</td><td>Hot reload glitch</td><td>Hard reload (<code>Cmd+Shift+R</code>); state is server-side.</td></tr>
+</table>
+
+<div class="callout">
+  <strong>Fallback if the live vote cannot complete</strong>
+  Do not improvise a fake success. Switch to the seeded evidence: open Alex’s Voting History, verify an existing receipt, then the auditor’s proof table and ledger verification. Explain the five stages from <code>/how-it-works</code> and offer to retry after the session. This is an honest, still-technical fallback.
+</div>
+
+<h2 class="section" style="margin-top:16px">8 · What not to claim</h2>
+<ul>
+  <li>Do not call it a deployed blockchain or a four-institution network.</li>
+  <li>Do not say the vote is “fully homomorphic” — encryption is additive Paillier; totals are decrypted once.</li>
+  <li>Do not say the proof hides <em>what</em> you voted for — encryption does that; the proof hides <em>who</em> you are.</li>
+  <li>Do not claim production security: demo credentials, single-key custody, SQLite, local ceremony.</li>
+  <li>Do not claim a smart contract or gas-based consensus — there are none in this build.</li>
+</ul>
+
+<h2 class="section" style="margin-top:16px">9 · Closing statement</h2>
+<p>End on the design principle, not the feature list:</p>
+<p><strong>“CRYPTORA does not ask voters to trust a database. It publishes the eligibility root, accepts only encrypted ballots with a valid proof, signs every block, and lets an independent auditor recompute the whole chain. The prototype proves the integration is practical; the limitations are the roadmap.”</strong></p>
+
+<div class="footer-note">
+  Commands: <code>npm install</code> · <code>npm run seed</code> (resets demo data) · <code>npm run dev</code> (API :4000, client :5173) · <code>npm run build &amp;&amp; npm start</code> (production mode, :4000) · <code>npm test</code>.
+  Full evidence and known limitations: <code>PRESENTATION_READINESS.md</code>. Narration script: <code>docs/DEMO_GUIDE.md</code>.
+</div>
+
+</body>
+</html>
