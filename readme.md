@@ -1,8 +1,20 @@
 # cryptora: secure privacy-preserving e-voting platform
 
-welcome to the repository for cryptora, a secure and privacy-preserving e-voting system built on a consortium blockchain and zero-knowledge proofs. instead of a traditional voting portal, cryptora separates voter eligibility, ballot submission, and ledger integrity into distinct cryptographic mechanisms so that no plaintext ballot is ever stored and no api response joins a voter identity to a candidate selection.
+**A secure, privacy-preserving e-voting platform built on a consortium blockchain and zero-knowledge proofs.**
 
-# tech stack
+cryptora separates three questions that conventional e-voting systems conflate:
+
+| question | mechanism |
+| --- | --- |
+| who is allowed to vote? | poseidon merkle tree of voter commitments, published as a root on the ledger |
+| what was submitted? | a paillier ciphertext vector, encrypted in the voter's browser |
+| has anything been altered? | an append-only block chain signed by five validators with a 4-of-5 quorum |
+
+nothing in the system stores a plaintext ballot, and no api response joins a voter identity to a candidate selection.
+
+---
+
+## tech stack
 
 - **frontend:** react 18 + typescript + vite + tailwind css
 - **backend:** express 4 + typescript
@@ -11,7 +23,9 @@ welcome to the repository for cryptora, a secure and privacy-preserving e-voting
 - **consortium blockchain:** five validators with 4-of-5 quorum, append-only signed blocks
 - **deployment:** node.js production build served from a single process
 
-# key features
+---
+
+## key features
 
 - **three-question separation:** who may vote, what was submitted, and whether anything was altered are answered independently
 - **browser-side proving:** voters generate groth16 proofs locally and encrypt one-hot ballot vectors with paillier before submission
@@ -20,7 +34,9 @@ welcome to the repository for cryptora, a secure and privacy-preserving e-voting
 - **deterministic seed:** a repeatable demonstration dataset (12,480 voter commitments, 8 elections, 8,526 ballots) is reproducible on every machine
 - **audit & reporting:** auditor workspace, ledger explorer, election tallies, and receipt codes for every cast ballot
 
-# local development setup
+---
+
+## local development setup
 
 follow these steps to run cryptora on your local machine.
 
@@ -68,3 +84,40 @@ other scripts:
 
 - `npm test` — vitest cryptography suite (hashing, merkle membership, paillier tallying, ed25519)
 - `npm run seed` — reset the demonstration dataset at any time
+
+---
+
+## architecture at a glance
+
+```
+client/            react 18 + typescript + vite + tailwind
+  src/pages        public site, three role workspaces, the ballot flow
+  src/lib          api client, auth context, browser-side prover + paillier
+  public/zkp       eligibility.wasm + eligibility_final.zkey (groth16)
+server/            express 4 + typescript
+  routes           auth, public, admin, voter, auditor
+  lib              merkle, paillier, ed25519, chain, zkp, reports, audit, stats
+prisma/            schema + deterministic seed (sqlite)
+circuits/          eligibility.circom (depth-13 poseidon membership + nullifier)
+docs/              architecture, blockchain, zkp, security, demo guide
+tests/             vitest cryptography suite
+```
+
+---
+
+## honest limitations
+
+these are properties of this build, stated plainly rather than hidden:
+
+1. **the consortium is simulated.** five validators are independent database identities with genuine ed25519 keypairs and independent validation routines, but they run inside one node process rather than on five institutional machines. there is no network partition, gossip or byzantine fault simulation.
+2. **tally key custody is single-key.** each election's paillier private key is stored on the server. a production system would split it across independent trustees with threshold decryption.
+3. **no ballot well-formedness circuit.** the circuit proves eligibility and nullifier derivation, not that the encrypted vector is exactly one-hot. that property is approximated by server-side length checks and the ciphertext commitment, not by a range proof.
+4. **witness delivery.** the credential secret is derived server-side and delivered to the voter's own browser over the authenticated session. there is no hardware token, wallet or national e-id integration.
+5. **sqlite + prisma db push.** the schema is applied by push rather than versioned migrations, which is appropriate for a single-machine demonstration.
+6. **proof artifacts are ~5 mb.** the first ballot generates a proof in a few seconds while snarkjs loads the wasm and zkey; server-side verification takes roughly 100–200 ms.
+
+---
+
+## license
+
+mit
