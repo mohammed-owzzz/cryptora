@@ -38,7 +38,9 @@ nothing in the system stores a plaintext ballot, and no api response joins a vot
 
 ## screenshots
 
-screenshots will be added here once the final set is provided.
+| screenshot 1 |
+| --- |
+| ![screenshot 1](screenshots/cryptora-screenshot-1.png) |
 
 to capture: run `npm run dev`, open <http://localhost:5173>, and take screenshots of each view.
 
