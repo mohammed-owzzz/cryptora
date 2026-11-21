@@ -36,6 +36,19 @@ nothing in the system stores a plaintext ballot, and no api response joins a vot
 
 ---
 
+## screenshots
+
+place screenshots of the running app in `screenshots/` and reference them here:
+
+| voter dashboard | auditor workspace |
+| --- | --- |
+| `![voter dashboard](screenshots/voter-dashboard.png)` | `![auditor workspace](screenshots/auditor-workspace.png)` |
+| `![ballot flow](screenshots/ballot-flow.png)` | `![ledger explorer](screenshots/ledger-explorer.png)` |
+
+to capture: run `npm run dev`, open <http://localhost:5173>, and take screenshots of each view.
+
+---
+
 ## local development setup
 
 follow these steps to run cryptora on your local machine.
